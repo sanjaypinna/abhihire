@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  span {
+    color: black;
+  }
+  h1 h2 h3 h4 span p {
+    color: black;
+  }
+}
+ h1 h2 h3 h4 span p {
+    color: black;
+}
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+.custom-carousel .control-arrow {
+  background-color: black !important;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50% !important;
+  transform: translateY(-50%);
+}
+
+.custom-carousel .control-prev {
+  left: 15px; /* Adjust as needed */
+}
+
+.custom-carousel .control-next {
+  right: 15px; /* Adjust as needed */
+}
