@@ -4,7 +4,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
@@ -77,7 +76,7 @@ export default function RootLayout({
           {/* Sidebar */}
           {pathname !== "/login" && (
             <aside
-              className={`fixed lg:relative  mt-5 lg:mt-0 lg:translate-x-0 top-0 h-full left-0 z-40 bg-gray-200 text-black w-64 lg:w-64 min-h-screen transition-transform transform ${
+              className={`fixed lg:relative  mt-5 h-full lg:h-auto lg:mt-0 lg:translate-x-0 top-0  left-0 z-40 bg-gray-200 text-black w-64 lg:w-64  transition-transform transform ${
                 isSidebarOpen ? "translate-x-0" : "-translate-x-full"
               } lg:translate-x-0`}
             >
