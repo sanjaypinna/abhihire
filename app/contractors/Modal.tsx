@@ -1,7 +1,7 @@
 // Modal.tsx
 import React from "react";
 import { toast } from "react-toastify"; // Import toast
-
+import Image from "next/image";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -12,6 +12,16 @@ interface ModalProps {
     Pincode: string;
     SNo: string;
     Status: number;
+    Image: string;
+    Street: string;
+    City: string;
+    State: string;
+    Country: string;
+    Area: string;
+    District: string;
+    VerificationStatus: string;
+    SubscriptionEndingDate: string;
+    AddedDate: string;
   }; // Add any other details you want to display
   onStatusChangeSuccess: () => void;
 }
@@ -49,8 +59,57 @@ const Modal: React.FC<ModalProps> = ({
     }
   };
 
-  console.log(worker.Status);
-
+  const Data = [
+    {
+      label: "Name",
+      value: worker.Name,
+    },
+    {
+      label: "Mobile No",
+      value: worker.MobileNo,
+    },
+    {
+      label: "Email",
+      value: worker.Email,
+    },
+    {
+      label: "Street",
+      value: worker.Street,
+    },
+    {
+      label: "Area",
+      value: worker.Area,
+    },
+    {
+      label: "Pincode",
+      value: worker.Pincode,
+    },
+    {
+      label: "District",
+      value: worker.District,
+    },
+    {
+      label: "State",
+      value: worker.State,
+    },
+    {
+      label: "Subscription Status",
+      value:
+        worker.VerificationStatus === "1"
+          ? "Subscribed"
+          : worker.VerificationStatus === "2"
+          ? "Not Subscribed"
+          : "Expired",
+    },
+    {
+      label: "Subscription Ending Date",
+      value: worker.SubscriptionEndingDate,
+    },
+    {
+      label: "Joined Date",
+      value: worker.AddedDate,
+    },
+  ];
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
       <div
@@ -58,18 +117,15 @@ const Modal: React.FC<ModalProps> = ({
         style={{ maxHeight: "90%", backgroundColor: "white" }}
       >
         <div className="flex flex-col gap-2 w-full overflow-y-auto p-4 max-h-[60vh]">
-          <div className="flex">
-            <p className="basis-1/4 font-semibold">Name:</p>
-            <p>{worker.Name}</p>
-          </div>
-          <div className="flex">
-            <p className="basis-1/4 font-semibold">Mobile:</p>
-            <p>{worker.MobileNo}</p>
-          </div>
-          <div className="flex">
-            <p className="basis-1/4 font-semibold">Pincode:</p>
-            <p>{worker.Pincode}</p>
-          </div>
+          <Image src={worker.Image} width={62} height={62} alt="logo" />
+          {Data.map((item, index) => (
+            <div className="flex gap-2" key={index}>
+              <p className="basis-1/4 font-semibold min-w-[140px]">
+                {item.label}:
+              </p>
+              <p className="basis-3/4">{item.value}</p>
+            </div>
+          ))}
         </div>
         <div className="mt-4 flex space-x-2 justify-center">
           <button
