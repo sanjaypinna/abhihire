@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import { fetchWorksData } from "../fetch";
 import Modal from "./Modal";
-
+import { Column, useTable } from "react-table";
+import React from "react";
 interface Work {
   Name: string;
   MobileNo: string;
@@ -10,21 +11,29 @@ interface Work {
   Pincode: string;
   SNo: string;
   Status: number;
+  WorkCategoryName: string;
   WorkId: string;
+  DatePosted: string;
+  PostedBy: string;
+  District: string;
+  State: string;
+  Description: string;
+  UserName: string;
 }
 
 const Works = () => {
-  const [volunteersData, setWorkersData] = useState<Work[]>([]); // Store API response
+  const [workData, setWorkData] = useState<Work[]>([]); // Store API response
   const [selectedWorker, setSelectedWorker] = useState<Work | null>(null); // Update type to Worker or null
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchWorkers = async () => {
     setIsLoading(true); // Set loading state to true
     try {
       const data = await fetchWorksData();
       const filteredData = data.data || [];
-      setWorkersData(filteredData);
+      setWorkData(filteredData);
     } catch (error) {
       console.error("Error fetching jobs:", error);
     } finally {
@@ -50,30 +59,115 @@ const Works = () => {
     fetchWorkers(); // Refetch jobs data
   };
 
+  const columns: Column<Work>[] = React.useMemo(
+    () => [
+      {
+        Header: "Sno",
+        accessor: "SNo",
+        Cell: ({ row }: { row: { index: number } }) => row.index + 1, // Use row index for S.no
+      },
+      { Header: "Name", accessor: "Name" },
+      { Header: "Work Category", accessor: "WorkCategoryName" },
+      { Header: "Pincode", accessor: "Pincode" },
+      { Header: "Date Posted", accessor: "DatePosted" },
+      {
+        Header: "Action",
+        id: "view",
+        Cell: ({ row }: { row: { original: Work } }) => (
+          <button
+            className="bg-blue-600 text-white font-bold px-3 py-1 rounded hover:bg-blue-400"
+            onClick={() => {
+              openModal(row.original);
+            }}
+          >
+            Update
+          </button>
+        ),
+      },
+    ],
+    []
+  );
+
+const dataToRender = React.useMemo(() => {
+    if (!searchQuery) return workData;
+    return workData.filter((work) =>
+      Object.values(work).some((value) =>
+        String(value).toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    );
+  }, [searchQuery, workData]);
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = useTable({
+    columns,
+    data: dataToRender,
+  });
   return (
     <div className=" top-14 lg:top-0 relative">
       <div className="flex justify-between items-center mb-5">
-        <h1 className="text-xl font-bold">Contractors List</h1>
+        <h1 className="text-xl font-bold">View Works </h1>
       </div>
 
       {/* Content for the active tab */}
-      {isLoading ? (
-        <p>Loading jobs...</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {volunteersData.length > 0 ? (
-            volunteersData.map((volunteer) => (
-              <WorkCard
-                key={volunteer.SNo}
-                item={volunteer}
-                onView={() => openModal(volunteer)}
-              />
-            ))
-          ) : (
-            <p>No data available</p>
-          )}
-        </div>
-      )}
+      <div className="w-full mb-4">
+        <input
+          type="text"
+          placeholder="Search by name, mobile or email..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full md:w-1/3 p-2 border border-gray-300 rounded"
+        />
+      </div>
+      <div className="flex  mb-6 gap-4 text-center items-end flex-wrap justify-between ">
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <table
+            {...getTableProps()}
+            className="min-w-full bg-white border rounded-lg border-gray-200"
+          >
+            <thead>
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
+                  {headerGroup.headers.map((column) => (
+                    <th
+                      {...column.getHeaderProps()}
+                      key={column.id}
+                      className="text-left p-2 border-b border-gray-200"
+                    >
+                      {column.render("Header")}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {rows.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()} key={row.id}>
+                    {row.cells.map((cell) => (
+                      <td
+                        {...cell.getCellProps()}
+                        key={cell.value}
+                        className="p-2 border-b border-gray-200"
+                      >
+                        {cell.render("Cell")}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+      </div>
+
       {/* Modal */}
       {selectedWorker && (
         <Modal
@@ -83,22 +177,6 @@ const Works = () => {
           onStatusChangeSuccess={handleStatusChangeSuccess}
         />
       )}
-    </div>
-  );
-};
-
-const WorkCard = ({ item, onView }: { item: Work; onView: () => void }) => {
-  return (
-    <div className="bg-white shadow-md rounded-lg p-4 border border-gray-200 flex flex-col items-center gap-2">
-      <h2 className="text-lg font-bold">{item.Name}</h2>
-      <p className="text-sm">{item.Place}</p>
-      <p className="text-sm">{item.MobileNo}</p>
-      <button
-        onClick={onView}
-        className="bg-blue-400 text-white font-bold px-3 py-1 rounded hover:bg-blue-600 mt-2"
-      >
-        Update
-      </button>
     </div>
   );
 };

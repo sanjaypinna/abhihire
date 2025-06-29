@@ -12,7 +12,14 @@ interface ModalProps {
     Pincode: string;
     SNo: string;
     Status: number;
+    WorkCategoryName: string;
     WorkId: string;
+    DatePosted: string;
+    PostedBy: string;
+    District: string;
+    State: string;
+    Description: string;
+    UserName: string;
   }; // Add any other details you want to display
   onStatusChangeSuccess: () => void;
 }
@@ -50,7 +57,41 @@ const Modal: React.FC<ModalProps> = ({
     }
   };
 
-  console.log(worker.Status);
+
+  const Data = [
+    {
+      label: "Name",
+      value: worker.Name,
+    },
+    {
+      label: "Work Category",
+      value: worker.WorkCategoryName,
+    },
+    {
+      label: "Description",
+      value: worker.Description,
+    },
+    {
+      label: "Area",
+      value: worker.Place,
+    },
+    {
+      label: "District",
+      value: worker.District,
+    },
+    {
+      label: "State",
+      value: worker.State,
+    },
+    {
+      label: "Pincode",
+      value: worker.Pincode,
+    },
+    {
+      label: "Posted By",
+      value: worker.UserName,
+    },
+  ];
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
@@ -59,18 +100,12 @@ const Modal: React.FC<ModalProps> = ({
         style={{ maxHeight: "90%", backgroundColor: "white" }}
       >
         <div className="flex flex-col gap-2 w-full overflow-y-auto p-4 max-h-[60vh]">
-          <div className="flex">
-            <p className="basis-1/4 font-semibold">Name:</p>
-            <p>{worker.Name}</p>
-          </div>
-          <div className="flex">
-            <p className="basis-1/4 font-semibold">Mobile:</p>
-            <p>{worker.MobileNo}</p>
-          </div>
-          <div className="flex">
-            <p className="basis-1/4 font-semibold">Pincode:</p>
-            <p>{worker.Pincode}</p>
-          </div>
+          {Data.map((item, index) => (
+            <div className="flex gap-2" key={index}>
+              <p className="basis-1/4 font-semibold min-w-[140px]">{item.label}:</p>
+              <p className="basis-3/4">{item.value}</p>
+            </div>
+          ))}
         </div>
         <div className="mt-4 flex space-x-2 justify-center">
           <button
@@ -82,7 +117,7 @@ const Modal: React.FC<ModalProps> = ({
           {worker.Status == 0 && (
             <button
               className="bg-green-500 text-white font-bold px-3 py-1 rounded hover:bg-green-600"
-              onClick={() => handleStatusChange(worker.SNo, 1)}
+              onClick={() => handleStatusChange(worker.WorkId, 1)}
             >
               Block
             </button>
