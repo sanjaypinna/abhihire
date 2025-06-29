@@ -180,7 +180,7 @@ const Contractorspage = () => {
         <Modal
           isOpen={isModalOpen}
           onClose={closeModal}
-          worker={selectedWorker}
+          contractor={selectedWorker}
           onStatusChangeSuccess={handleStatusChangeSuccess}
         />
       )}

@@ -129,7 +129,17 @@ export default function RootLayout({
                       <p className="text-xl">Works </p>
                     </a>
                   </li>
-
+                  <li
+                    className={`mb-2 w-full ${
+                      pathname === "/transactions"
+                        ? "bg-gray-400"
+                        : "hover:bg-gray-300"
+                    }`}
+                  >
+                    <a href="/transactions" className="block w-full p-2">
+                      <p className="text-xl">Transactions</p>
+                    </a>
+                  </li>
                   {isLoggedIn && (
                     <button onClick={handleLogout} className="mb-2">
                       <p className="text-xl p-2">Logout</p>

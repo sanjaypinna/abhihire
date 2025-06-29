@@ -22,3 +22,9 @@ export const fetchWorksData = async () => {
   const data = await response.json(); // The data is already parsed as JSON
   return data;
 };
+
+export const fetchTransactionsData = async () => {
+  const response = await fetch("/api/transactions");
+  const data = await response.json(); // The data is already parsed as JSON
+  return data;
+};

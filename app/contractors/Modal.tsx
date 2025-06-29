@@ -4,7 +4,7 @@ import { toast } from "react-toastify"; // Import toast
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  worker: {
+  contractor: {
     Name: string;
     Email: string;
     MobileNo: string;
@@ -28,7 +28,7 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
-  worker,
+  contractor,
   onStatusChangeSuccess,
 }) => {
   if (!isOpen) return null;
@@ -61,52 +61,52 @@ const Modal: React.FC<ModalProps> = ({
   const Data = [
     {
       label: "Name",
-      value: worker.Name,
+      value: contractor.Name,
     },
     {
       label: "Mobile No",
-      value: worker.MobileNo,
+      value: contractor.MobileNo,
     },
     {
       label: "Email",
-      value: worker.Email,
+      value: contractor.Email,
     },
     {
       label: "Street",
-      value: worker.Street,
+      value: contractor.Street,
     },
     {
       label: "Area",
-      value: worker.Area,
+      value: contractor.Area,
     },
     {
       label: "Pincode",
-      value: worker.Pincode,
+      value: contractor.Pincode,
     },
     {
       label: "District",
-      value: worker.District,
+      value: contractor.District,
     },
     {
       label: "State",
-      value: worker.State,
+      value: contractor.State,
     },
     {
       label: "Subscription Status",
       value:
-        worker.VerificationStatus === "1"
+        contractor.VerificationStatus === "1"
           ? "Subscribed"
-          : worker.VerificationStatus === "2"
+          : contractor.VerificationStatus === "2"
           ? "Not Subscribed"
           : "Expired",
     },
     {
       label: "Subscription Ending Date",
-      value: worker.SubscriptionEndingDate,
+      value: contractor.SubscriptionEndingDate,
     },
     {
       label: "Joined Date",
-      value: worker.AddedDate,
+      value: contractor.AddedDate,
     },
   ];
   return (
@@ -116,8 +116,8 @@ const Modal: React.FC<ModalProps> = ({
         style={{ maxHeight: "90%", backgroundColor: "white" }}
       >
         <div className="flex flex-col gap-2 w-full overflow-y-auto p-4 max-h-[60vh]">
-          {worker.Image && (
-            <img src={worker.Image} width={120} height={120} alt="logo" />
+          {contractor.Image && (
+            <img src={contractor.Image} width={150} height={150} className="m-auto" alt="logo" />
           )}
           {Data.map((item, index) => (
             <div className="flex gap-2" key={index}>
@@ -135,18 +135,18 @@ const Modal: React.FC<ModalProps> = ({
           >
             Close
           </button>
-          {worker.Status == 0 && (
+          {contractor.Status == 0 && (
             <button
               className="bg-green-500 text-white font-bold px-3 py-1 rounded hover:bg-green-600"
-              onClick={() => handleStatusChange(worker.SNo, 1)}
+              onClick={() => handleStatusChange(contractor.SNo, 1)}
             >
               Block
             </button>
           )}
-          {worker.Status == 1 && (
+          {contractor.Status == 1 && (
             <button
               className="bg-red-500 text-white font-bold px-3 py-1 rounded hover:bg-red-600"
-              onClick={() => handleStatusChange(worker.SNo, 0)}
+              onClick={() => handleStatusChange(contractor.SNo, 0)}
             >
               Unblock
             </button>

@@ -32,6 +32,12 @@ const Homepage = () => {
           >
             All Works{" "}
           </a>
+          <a
+            className=" p-2 bg-blue-500 font-bold text-white w-40"
+            href="/transactions"
+          >
+            Transactions{" "}
+          </a>
         </div>
       </div>
     </div>
