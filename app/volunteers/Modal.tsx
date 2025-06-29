@@ -1,5 +1,5 @@
 // Modal.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify"; // Import toast
 
 interface ModalProps {
@@ -13,6 +13,7 @@ interface ModalProps {
     Pincode: string;
     UserId: string;
     Password: string;
+    Status: string;
   }; // Add any other details you want to display
   onStatusChangeSuccess: () => void;
 }
@@ -25,6 +26,10 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
   const [volunteerData, setVolunteerData] =
     useState<ModalProps["volunteer"]>(volunteer);
+
+  useEffect(() => {
+    setVolunteerData(volunteer);
+  }, [volunteer]);
 
   if (!isOpen) return null;
 
@@ -85,6 +90,37 @@ const Modal: React.FC<ModalProps> = ({
       toast.error("Failed to add volunteer.");
     }
   };
+
+
+  const handleBlock = async (Status: string) => {
+    try {
+      const response = await fetch("/api/volunteers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          Name: volunteerData.Name,
+          EmailId: volunteerData.EmailId,
+          MobileNo: volunteerData.MobileNo,
+          Pincode: volunteerData.Pincode,
+          UserId: volunteerData.UserId,
+          Password: volunteerData.Password,
+          Status: Status,
+        }),
+      });
+      const result = await response.json();
+      if (result?.status === 200) {
+        toast.success("Volunteer blocked successfully!");
+        onStatusChangeSuccess();
+      } else {
+        toast.error(result?.message || "Failed to block volunteer.");
+      }
+    } catch (error) {
+      toast.error("Failed to block volunteer.");
+    }
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
       <div
@@ -174,6 +210,22 @@ const Modal: React.FC<ModalProps> = ({
           >
             {volunteer.VolunteerId ? "Update" : "Add"}
           </button>
+          {volunteer.Status == "0" && (
+            <button
+              className="bg-green-500 text-white font-bold px-3 py-1 mt-2 rounded hover:bg-green-600"
+              onClick={() => handleBlock("1")}
+            >
+              Block
+            </button>
+          )}
+          {volunteer.Status == "1" && (
+            <button
+              className="bg-red-500 text-white font-bold px-3 py-1 mt-2 rounded hover:bg-red-600"
+              onClick={() => handleBlock("0")}
+            >
+              Unblock
+            </button>
+          )}
         </div>
       </div>
       {/* Buttons */}
