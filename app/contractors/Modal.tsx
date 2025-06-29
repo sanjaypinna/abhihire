@@ -117,7 +117,7 @@ const Modal: React.FC<ModalProps> = ({
       >
         <div className="flex flex-col gap-2 w-full overflow-y-auto p-4 max-h-[60vh]">
           {worker.Image && (
-            <img src={worker.Image} width={62} height={62} alt="logo" />
+            <img src={worker.Image} width={120} height={120} alt="logo" />
           )}
           {Data.map((item, index) => (
             <div className="flex gap-2" key={index}>
