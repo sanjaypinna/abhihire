@@ -64,8 +64,8 @@ const Volunteerspage = () => {
     () => [
       {
         Header: "Sno",
-        accessor: "SNo",
-        Cell: ({ row }: { row: { index: number } }) => row.index + 1, // Use row index for S.no
+        id: "rowIndex",
+        Cell: ({ row }: { row: { index: number } }) => row.index + 1,
       },
       { Header: "Name", accessor: "Name" },
       { Header: "Mobile No", accessor: "MobileNo" },

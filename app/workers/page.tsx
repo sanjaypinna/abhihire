@@ -69,9 +69,10 @@ const Workerspage = () => {
     () => [
       {
         Header: "Sno",
-        accessor: "SNo",
-        Cell: ({ row }: { row: { index: number } }) => row.index + 1, // Use row index for S.no
+        id: "rowIndex",
+        Cell: ({ row }: { row: { index: number } }) => row.index + 1,
       },
+
       { Header: "Name", accessor: "Name" },
       { Header: "MobileNo", accessor: "MobileNo" },
       { Header: "Work Category", accessor: "WorkCategoryName" },
@@ -112,16 +113,11 @@ const Workerspage = () => {
     );
   }, [searchQuery, workersData]);
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({
-    columns,
-    data: dataToRender,
-  });
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({
+      columns,
+      data: dataToRender,
+    });
 
   return (
     <div className=" top-14 lg:top-0 relative">
