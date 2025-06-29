@@ -91,7 +91,6 @@ const Modal: React.FC<ModalProps> = ({
     }
   };
 
-
   const handleBlock = async (Status: string) => {
     try {
       const response = await fetch("/api/volunteers", {
@@ -210,7 +209,7 @@ const Modal: React.FC<ModalProps> = ({
           >
             {volunteer.VolunteerId ? "Update" : "Add"}
           </button>
-          {volunteer.Status == "0" && (
+          {volunteer.VolunteerId && volunteer.Status == "0" && (
             <button
               className="bg-green-500 text-white font-bold px-3 py-1 mt-2 rounded hover:bg-green-600"
               onClick={() => handleBlock("1")}
@@ -218,7 +217,7 @@ const Modal: React.FC<ModalProps> = ({
               Block
             </button>
           )}
-          {volunteer.Status == "1" && (
+          {volunteer.VolunteerId && volunteer.Status == "1" && (
             <button
               className="bg-red-500 text-white font-bold px-3 py-1 mt-2 rounded hover:bg-red-600"
               onClick={() => handleBlock("0")}
