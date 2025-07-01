@@ -87,7 +87,13 @@ export default function RootLayout({
                   </h1>
                 </a>
                 <ul>
-                  <li>
+                  <li
+                    className={`mb-2 w-full ${
+                      pathname === "/"
+                        ? "bg-gray-400"
+                        : "hover:bg-gray-300"
+                    }`}
+                  >
                     <a href="/" className="block w-full p-2">
                       <p className="text-xl">Home</p>
                     </a>
