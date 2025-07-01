@@ -19,6 +19,7 @@ interface Work {
   State: string;
   Description: string;
   UserName: string;
+  ContractorId?: string;
 }
 
 const Works = () => {
@@ -66,8 +67,10 @@ const Works = () => {
         id: "rowIndex",
         Cell: ({ row }: { row: { index: number } }) => row.index + 1,
       },
-      { Header: "Name", accessor: "Name" },
-      { Header: "Work Category", accessor: "WorkCategoryName" },
+      { Header: "Contractor Code", accessor: "ContractorId" },
+      { Header: "Contractor Name", accessor: "Name" },
+      { Header: "MobileNo", accessor: "MobileNo" },
+      { Header: "Work Name", accessor: "WorkCategoryName" },
       { Header: "Pincode", accessor: "Pincode" },
       { Header: "Date Posted", accessor: "DatePosted" },
       {
@@ -88,7 +91,7 @@ const Works = () => {
     []
   );
 
-const dataToRender = React.useMemo(() => {
+  const dataToRender = React.useMemo(() => {
     if (!searchQuery) return workData;
     return workData.filter((work) =>
       Object.values(work).some((value) =>
@@ -97,16 +100,11 @@ const dataToRender = React.useMemo(() => {
     );
   }, [searchQuery, workData]);
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({
-    columns,
-    data: dataToRender,
-  });
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({
+      columns,
+      data: dataToRender,
+    });
   return (
     <div className=" top-14 lg:top-0 relative">
       <div className="flex justify-between items-center mb-5">

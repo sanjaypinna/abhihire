@@ -25,6 +25,7 @@ interface Worker {
   WorkCategoryName: string;
   DOB: string;
   Experience: string;
+  WorkerId?:string,
 }
 
 const Workerspage = () => {
@@ -76,6 +77,8 @@ const Workerspage = () => {
       { Header: "Name", accessor: "Name" },
       { Header: "MobileNo", accessor: "MobileNo" },
       { Header: "Work Category", accessor: "WorkCategoryName" },
+      { Header: "WorkerId", accessor: "WorkerId" },
+
       {
         Header: "Verification Status",
         accessor: "VerificationStatus",
