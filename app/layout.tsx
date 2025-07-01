@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-    
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -83,10 +83,15 @@ export default function RootLayout({
               <div className="lg:p-4 py-12 px-4">
                 <a href="/">
                   <h1 className="text-2xl font-bold mb-4 lg:mb-6 hidden sm:block lg:block">
-                    Abhi Hire
+                    AbhiHire
                   </h1>
                 </a>
                 <ul>
+                  <li>
+                    <a href="/" className="block w-full p-2">
+                      <p className="text-xl">Home</p>
+                    </a>
+                  </li>
                   <li
                     className={`mb-2 w-full ${
                       pathname === "/volunteers"
@@ -183,7 +188,7 @@ export default function RootLayout({
             {/* Main Content */}
             <div className="">{children}</div>
             <ToastContainer />
-            </main>
+          </main>
 
           {/* Overlay for mobile when sidebar is open */}
           {isSidebarOpen && (

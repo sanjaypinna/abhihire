@@ -68,9 +68,9 @@ const Works = () => {
         Cell: ({ row }: { row: { index: number } }) => row.index + 1,
       },
       { Header: "Contractor Code", accessor: "ContractorId" },
-      { Header: "Contractor Name", accessor: "Name" },
+      { Header: "Contractor Name", accessor: "UserName" },
       { Header: "MobileNo", accessor: "MobileNo" },
-      { Header: "Work Name", accessor: "WorkCategoryName" },
+      { Header: "Work Name", accessor: "Name" },
       { Header: "Pincode", accessor: "Pincode" },
       { Header: "Date Posted", accessor: "DatePosted" },
       {
