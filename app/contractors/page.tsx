@@ -128,13 +128,12 @@ const Contractorspage = () => {
     { label: "Pincode", key: "Pincode" },
     { label: "Verification Status", key: "Verification Status" },
   ];
-
   const csvData = contractorsData.map((row, index) => ({
-    Sno: index + 1,
-    Name: row.Name,
-    MobileNo: row.MobileNo,
-    ContractorId: row.ContractorId,
-    Pincode: row.Pincode,
+    Sno: String(index + 1),
+    Name: String(row.Name),
+    MobileNo: String(row.MobileNo),
+    ContractorId: String(row.ContractorId),
+    Pincode: String(row.Pincode),
     "Verification Status":
       row.VerificationStatus === "1"
         ? "Subscribed"
@@ -143,10 +142,13 @@ const Contractorspage = () => {
         : "Expired",
   }));
 
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString("en-GB").split("/").join("_");
+
   const csvReport = {
     data: csvData,
     headers: headers,
-    filename: "contractors.csv",
+    filename: `Contractors_${formattedDate}.csv`,
   };
 
   return (

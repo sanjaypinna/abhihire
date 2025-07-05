@@ -88,19 +88,23 @@ const TopVolunteers = () => {
   ];
 
   const csvData = volunteersData.map((row, index) => ({
-    Sno: index + 1,
-    Name: row.name,
-    MobileNo: row.mobile,
-    Pincode: row.pincode,
-    "Total Added": row.total_all,
-    "Total Subscribed": row.total_subscribed,
-    "Total Not Subscribed": row.total_not_subscribed,
+    Sno: String(index + 1),
+    Name: String(row.name),
+    MobileNo: String(row.mobile), // preserve exact digits
+    Pincode: String(row.pincode), // preserve leading 0s
+    "Total Added": String(row.total_all),
+    "Total Subscribed": String(row.total_subscribed),
+    "Total Not Subscribed": String(row.total_not_subscribed),
   }));
+
+
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString("en-GB").split("/").join("_"); // Gives DD_MM_YYYY
 
   const csvReport = {
     data: csvData,
     headers: headers,
-    filename: "volunteers.csv",
+    filename: `Volunteer_${formattedDate}.csv`, // ✅ Final filename
   };
 
   return (

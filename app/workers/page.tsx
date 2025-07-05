@@ -134,12 +134,12 @@ const Workerspage = () => {
   ];
 
   const csvData = workersData.map((row, index) => ({
-    Sno: index + 1,
-    Name: row.Name,
-    MobileNo: row.MobileNo,
-    WorkerId: row.WorkerId,
-    "Work Category": row.WorkCategoryName,
-    Pincode: row.Pincode,
+    Sno: String(index + 1),
+    Name: String(row.Name),
+    MobileNo: String(row.MobileNo),
+    WorkerId: String(row.WorkerId),
+    "Work Category": String(row.WorkCategoryName),
+    Pincode: String(row.Pincode),
     "Verification Status":
       row.VerificationStatus === "1"
         ? "Subscribed"
@@ -148,10 +148,13 @@ const Workerspage = () => {
         : "Expired",
   }));
 
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString("en-GB").split("/").join("_");
+
   const csvReport = {
     data: csvData,
     headers: headers,
-    filename: "workers.csv",
+    filename: `Workers_${formattedDate}.csv`,
   };
 
   return (

@@ -92,19 +92,22 @@ const TransactionsPage = () => {
   ];
 
   const csvData = workersData.map((row, index) => ({
-    Sno: index + 1,
-    UserId: row.UserId,
-    TransactionId: row.TransactionId,
-    Date: row.Date,
-    Amount: row.Amount,
-    PaymentStatus: row.PaymentStatus,
-    Remarks: row.Remarks,
+    Sno: String(index + 1),
+    UserId: String(row.UserId),
+    TransactionId: String(row.TransactionId),
+    Date: String(row.Date),
+    Amount: String(row.Amount),
+    PaymentStatus: String(row.PaymentStatus),
+    Remarks: String(row.Remarks),
   }));
+
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString("en-GB").split("/").join("_");
 
   const csvReport = {
     data: csvData,
     headers: headers,
-    filename: "transactions.csv",
+    filename: `Transactions_${formattedDate}.csv`,
   };
 
   return (
