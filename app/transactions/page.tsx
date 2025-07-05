@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Column, useTable } from "react-table";
 import { fetchTransactionsData } from "../fetch";
+import { CSVLink } from "react-csv";
 
 interface Worker {
   SNo: string;
@@ -80,19 +81,50 @@ const TransactionsPage = () => {
       data: dataToRender,
     });
 
+  const headers = [
+    { label: "Sno", key: "Sno" },
+    { label: "UserId", key: "UserId" },
+    { label: "Transaction ID", key: "TransactionId" },
+    { label: "Transaction Date", key: "Date" },
+    { label: "Transaction Amount", key: "Amount" },
+    { label: "Transaction Status", key: "PaymentStatus" },
+    { label: "Remarks", key: "Remarks" },
+  ];
+
+  const csvData = workersData.map((row, index) => ({
+    Sno: index + 1,
+    UserId: row.UserId,
+    TransactionId: row.TransactionId,
+    Date: row.Date,
+    Amount: row.Amount,
+    PaymentStatus: row.PaymentStatus,
+    Remarks: row.Remarks,
+  }));
+
+  const csvReport = {
+    data: csvData,
+    headers: headers,
+    filename: "transactions.csv",
+  };
+
   return (
     <div className=" top-14 lg:top-0 relative">
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold">View Transactions</h1>
       </div>
       <div className="w-full mb-4">
-        <input
-          type="text"
-          placeholder="Search by name, mobile or email..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full md:w-1/3 p-2 border border-gray-300 rounded"
-        />
+        <div className="flex gap-2 items-center justify-between flex-wrap">
+          <input
+            type="text"
+            placeholder="Search by name, mobile or email..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full md:w-1/3 p-2 border border-gray-300 rounded"
+          />
+          <button className="bg-green-400 text-white font-bold px-3 py-1 rounded hover:bg-green-600 mt-2">
+            <CSVLink {...csvReport}>Export</CSVLink>
+          </button>
+        </div>
       </div>
       <div className="flex  mb-6 gap-4 text-center items-end flex-wrap justify-between ">
         {isLoading ? (

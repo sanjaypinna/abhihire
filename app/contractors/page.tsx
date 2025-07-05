@@ -4,6 +4,7 @@ import { fetchContractorsData } from "../fetch";
 import Modal from "./Modal";
 import { Column, useTable } from "react-table";
 import React from "react";
+import { CSVLink } from "react-csv";
 
 interface Contractor {
   Name: string;
@@ -22,6 +23,7 @@ interface Contractor {
   VerificationStatus: string;
   SubscriptionEndingDate: string;
   AddedDate: string;
+  ContractorId: string;
 }
 
 const Contractorspage = () => {
@@ -115,19 +117,56 @@ const Contractorspage = () => {
       data: dataToRender,
     });
 
+  const headers = [
+    { label: "Sno", key: "Sno" },
+    { label: "Name", key: "Name" },
+    { label: "MobileNo", key: "MobileNo" },
+    {
+      label: "ContractorId",
+      key: "ContractorId",
+    },
+    { label: "Pincode", key: "Pincode" },
+    { label: "Verification Status", key: "Verification Status" },
+  ];
+
+  const csvData = contractorsData.map((row, index) => ({
+    Sno: index + 1,
+    Name: row.Name,
+    MobileNo: row.MobileNo,
+    ContractorId: row.ContractorId,
+    Pincode: row.Pincode,
+    "Verification Status":
+      row.VerificationStatus === "1"
+        ? "Subscribed"
+        : row.VerificationStatus === "2"
+        ? "Not Subscribed"
+        : "Expired",
+  }));
+
+  const csvReport = {
+    data: csvData,
+    headers: headers,
+    filename: "contractors.csv",
+  };
+
   return (
     <div className=" top-14 lg:top-0 relative">
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold">View Contractors</h1>
       </div>
       <div className="w-full mb-4">
-        <input
-          type="text"
-          placeholder="Search by name, mobile or email..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full md:w-1/3 p-2 border border-gray-300 rounded"
-        />
+        <div className="flex gap-2 items-center justify-between flex-wrap">
+          <input
+            type="text"
+            placeholder="Search by name, mobile or email..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full md:w-1/3 p-2 border border-gray-300 rounded"
+          />
+          <button className="bg-green-400 text-white font-bold px-3 py-1 rounded hover:bg-green-600 mt-2">
+            <CSVLink {...csvReport}>Export</CSVLink>
+          </button>
+        </div>
       </div>
       {/* Content for the active tab */}
       <div className="flex  mb-6 gap-4 text-center items-end flex-wrap justify-between ">

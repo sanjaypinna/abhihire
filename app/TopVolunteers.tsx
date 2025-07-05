@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchTopVolunteersData } from "./fetch";
 import { Column, useTable } from "react-table";
+import { CSVLink } from "react-csv";
 
 interface Volunteers {
   name: string;
@@ -10,6 +11,7 @@ interface Volunteers {
   total_all: number;
   total_subscribed: number;
   total_not_subscribed: number;
+  pincode?: string;
 }
 
 const TopVolunteers = () => {
@@ -40,19 +42,22 @@ const TopVolunteers = () => {
     fetchWorkers();
   }, []);
 
-  const columns: Column<Volunteers>[] = React.useMemo(() => [
-    {
-      Header: "Sno",
-      id: "rowIndex",
-      Cell: ({ row }) => row.index + 1,
-    },
-    { Header: "Name", accessor: "name" },
-    { Header: "MobileNo", accessor: "mobile" },
-    { Header: "Total All", accessor: "total_all" },
-    { Header: "Total Subscribed", accessor: "total_subscribed" },
-    { Header: "Total Unsubscribed", accessor: "total_not_subscribed" },
-  ], []); 
-  
+  const columns: Column<Volunteers>[] = React.useMemo(
+    () => [
+      {
+        Header: "Sno",
+        id: "rowIndex",
+        Cell: ({ row }) => row.index + 1,
+      },
+      { Header: "Name", accessor: "name" },
+      { Header: "MobileNo", accessor: "mobile" },
+      { Header: "Total All", accessor: "total_all" },
+      { Header: "Total Subscribed", accessor: "total_subscribed" },
+      { Header: "Total Unsubscribed", accessor: "total_not_subscribed" },
+    ],
+    []
+  );
+
   const dataToRender = React.useMemo(() => {
     if (!searchQuery.trim()) return volunteersData;
     const q = searchQuery.toLowerCase();
@@ -72,19 +77,50 @@ const TopVolunteers = () => {
       data: dataToRender,
     });
 
+  const headers = [
+    { label: "Sno", key: "Sno" },
+    { label: "Name", key: "Name" },
+    { label: "MobileNo", key: "MobileNo" },
+    { label: "Pincode", key: "Pincode" },
+    { label: "Total Added", key: "Total Added" },
+    { label: "Total Subscribed", key: "Total Subscribed" },
+    { label: "Total Not Subscribed", key: "Total Not Subscribed" },
+  ];
+
+  const csvData = volunteersData.map((row, index) => ({
+    Sno: index + 1,
+    Name: row.name,
+    MobileNo: row.mobile,
+    Pincode: row.pincode,
+    "Total Added": row.total_all,
+    "Total Subscribed": row.total_subscribed,
+    "Total Not Subscribed": row.total_not_subscribed,
+  }));
+
+  const csvReport = {
+    data: csvData,
+    headers: headers,
+    filename: "volunteers.csv",
+  };
+
   return (
     <div className="mt-10 relative">
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold">Top Volunteers</h1>
       </div>
       <div className="w-full mb-4">
-        <input
-          type="text"
-          placeholder="Search by name or mobile or total all or total subscribed or total unsubscribed..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full md:w-1/3 p-2 border border-gray-300 rounded"
-        />
+        <div className="flex gap-2 items-center justify-between flex-wrap">
+          <input
+            type="text"
+            placeholder="Search by name or mobile or total all or total subscribed or total unsubscribed..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full md:w-1/3 p-2 border border-gray-300 rounded"
+          />
+          <button className="bg-green-400 text-white font-bold px-3 py-1 rounded hover:bg-green-600 mt-2">
+            <CSVLink {...csvReport}>Export</CSVLink>
+          </button>
+        </div>
       </div>
       <div className="flex mb-6 gap-4 text-center items-end flex-wrap justify-between">
         {isLoading ? (
