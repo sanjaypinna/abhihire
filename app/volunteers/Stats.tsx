@@ -110,7 +110,6 @@ const Stats: React.FC<StatsProps> = ({
     setIsMonthlyLoading(false);
   }, [volunteerID, month]);
 
-  console.log(overallStats.contractors, monthlyStats);
 
   const options = [
     { value: "January", label: "January" },

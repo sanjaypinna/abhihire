@@ -1,12 +1,15 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import TopVolunteers from "./TopVolunteers";
+import Notification from "./Notification";
 
 const Homepage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div>
       <h1 className="text-2xl mb-6">Abhi Hire admin dashboard</h1>
-      <div className=" flex flex-wrap gap-5 text-center">
-        <div className=" flex gap-5 ">
+      <div className=" flex flex-wrap gap-5 justify-between text-center">
+        <div className=" flex flex-wrap gap-5 ">
           <a
             className=" p-2 bg-blue-500 font-bold text-white w-40"
             href="/volunteers"
@@ -19,8 +22,6 @@ const Homepage = () => {
           >
             Workers{" "}
           </a>
-        </div>
-        <div className=" flex gap-5">
           <a
             className=" p-2 bg-blue-500 font-bold text-white w-40"
             href="/contractors"
@@ -40,9 +41,24 @@ const Homepage = () => {
             Transactions{" "}
           </a>
         </div>
-      </div>
-      <TopVolunteers/>
 
+        <div>
+          <button
+            className=" p-2 bg-blue-500 font-bold text-white w-40"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Send Notification
+          </button>
+          {isModalOpen && (
+            <Notification
+              key={isModalOpen ? "open" : "closed"} // forces remount
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(!isModalOpen)}
+            />
+          )}
+        </div>
+      </div>
+      <TopVolunteers />
     </div>
   );
 };
