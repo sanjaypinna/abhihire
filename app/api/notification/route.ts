@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     formData.append("content", content);
     formData.append("type", type);
 
-    const apiEndpoint = "https://powerapps.sbs/AbhiHire/Notification/Send_GeneralNotification.php";
+    const apiEndpoint = "https://shop.abhihire.com/AbhiHire/Notification/Send_GeneralNotification.php";
 
     const response = await fetch(apiEndpoint, {
       method: "POST",

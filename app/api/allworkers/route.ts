@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const response = await fetch("https://powerapps.sbs/AbhiHire/sapanel/Get_AllWorks.php");
+  const response = await fetch("https://shop.abhihire.com/AbhiHire/sapanel/Get_AllWorks.php");
   const text = await response.text();
   const cleanText = text.replace(/^\uFEFF/, ""); // Remove BOM if it exists
   const data = JSON.parse(cleanText); // Parse the cleaned text as JSON
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     formData.append("WorkId", WorkId);
     formData.append("Status", Status);
 
-    const apiEndpoint = "https://powerapps.sbs/AbhiHire/sapanel/Update_Work.php";
+    const apiEndpoint = "https://shop.abhihire.com/AbhiHire/sapanel/Update_Work.php";
 
     const response = await fetch(apiEndpoint, {
       method: "POST",

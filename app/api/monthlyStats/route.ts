@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     formData.append("volunteer_id", volunteer_id);
     formData.append("month", month);  
 
-    const apiEndpoint = "https://powerapps.sbs/AbhiHire/sapanel/GetVolunteer_MonthStats.php";
+    const apiEndpoint = "https://shop.abhihire.com/AbhiHire/sapanel/GetVolunteer_MonthStats.php";
 
     const response = await fetch(apiEndpoint, {
       method: "POST",
